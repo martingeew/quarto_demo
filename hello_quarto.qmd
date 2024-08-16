@@ -6,22 +6,87 @@ format:
 jupyter: python3
 ---
 
-For a demonstration of a line plot on a polar axis, see @fig-polar.
+For a demonstration of a interactiive plotly line plot, see @fig-polar.
 
 ```{python}
 #| label: fig-polar
-#| fig-cap: "A line plot on a polar axis"
+#| fig-cap: "Home Ownership Rate by Generation in New Zealand"
 
-import numpy as np
-import matplotlib.pyplot as plt
+import pandas as pd
+import plotly_express as px
 
-r = np.arange(0, 2, 0.01)
-theta = 2 * np.pi * r
-fig, ax = plt.subplots(
-  subplot_kw = {'projection': 'polar'} 
+# Load the demographic share dataset
+df_ownership = pd.read_csv("home_ownership_generation.csv", sep=",")
+
+
+# Function to plot home ownership rates by age and generation using Plotly
+def plot_ownership_by_age_and_generation_plotly(df):
+    # Define the custom color palette
+    colors = {
+        "Gen X": "#636EFA",  # blue
+        "Baby Boomer": "#B6E880",  # light green
+        "Gen Z": "#FFA15A",  # orange
+        "Millennial": "#EF553B",  # red
+        "Silent": "#FF97FF",  # pink
+    }
+
+    # Create the plot
+    fig = px.line(
+        df,
+        x="Age group",
+        y="Home Ownership Rate",
+        color="Generation",
+        title="Home Ownership Rate (mean)",
+        labels={
+            "Age group": "Age Group",
+            "Home Ownership Rate": "Home Ownership Rate (%)",
+        },
+        line_shape="linear",
+        color_discrete_map=colors,  # Apply the custom color palette
+    )
+
+    fig.update_layout(
+        xaxis_title="Age Group",
+        yaxis_title="",
+        legend_title_text="",
+        template="plotly_dark",
+        xaxis=dict(tickangle=45),
+        plot_bgcolor="#282a36",
+        paper_bgcolor="#282a36",
+        font=dict(size=14, family="Consolas"),  # Set the font to Consolas
+        title_font=dict(size=18, family="Consolas"),
+        width=500,  # Adjust based on your needs
+        height=450,  # Adjust based on your needs
+    )
+
+    fig.update_yaxes(title_text="", range=[40, 90])
+
+    # Add footer annotation
+    fig.add_annotation(
+        text="Source: Statistics NZ",
+        xref="paper",
+        yref="paper",
+        x=1.5,
+        y=-0.3,
+        showarrow=False,
+        font=dict(size=11, color="white", family="Consolas"),
+    )
+
+    fig.show()
+
+
+# Plot the data using Plotly
+
+df_ownership_grouped = (
+    df_ownership[
+        (df_ownership["Generation"] != "Other")
+        & (df_ownership["Generation"] != "Total")
+        & (~df_ownership["Age group"].isin(["0-4", "5-9", "10-14"]))
+    ]
+    .groupby(["Age group", "Generation"])["Home Ownership Rate"]
+    .mean()
+    .reset_index()
 )
-ax.plot(theta, r)
-ax.set_rticks([0.5, 1, 1.5, 2])
-ax.grid(True)
-plt.show()
+
+plot_ownership_by_age_and_generation_plotly(df_ownership_grouped)
 ```
