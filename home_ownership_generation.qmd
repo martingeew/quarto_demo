@@ -10,7 +10,7 @@ For a demonstration of a interactiive plotly line plot, see @fig-polar.
 
 ```{python}
 #| label: fig-polar
-#| fig-cap: "Home Ownership Rate by Generation in New Zealand"
+#| fig-cap: "Home Ownership Rate (mean) by Generation in New Zealand. Source: Statistics NZ"
 
 import pandas as pd
 import plotly_express as px
@@ -36,7 +36,7 @@ def plot_ownership_by_age_and_generation_plotly(df):
         x="Age group",
         y="Home Ownership Rate",
         color="Generation",
-        title="Home Ownership Rate (mean)",
+        title="",
         labels={
             "Age group": "Age Group",
             "Home Ownership Rate": "Home Ownership Rate (%)",
@@ -60,17 +60,6 @@ def plot_ownership_by_age_and_generation_plotly(df):
     )
 
     fig.update_yaxes(title_text="", range=[40, 90])
-
-    # Add footer annotation
-    fig.add_annotation(
-        text="Source: Statistics NZ",
-        xref="paper",
-        yref="paper",
-        x=1.5,
-        y=-0.3,
-        showarrow=False,
-        font=dict(size=11, color="white", family="Consolas"),
-    )
 
     fig.show()
 
