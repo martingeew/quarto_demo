@@ -10,7 +10,7 @@ For a demonstration of a interactiive plotly line plot, see @fig-polar.
 
 ```{python}
 #| label: fig-polar
-#| fig-cap: "Home Ownership Rate (mean) by Generation in New Zealand. Source: Statistics NZ"
+#| fig-cap: "Home Ownership Rate (mean) by Generation in New Zealand<br>Source: Statistics NZ"
 
 import pandas as pd
 import plotly_express as px
