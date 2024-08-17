@@ -191,7 +191,7 @@ fig.update_xaxes(title_text="", range=[1985, 2020])
 fig.show()
 ```
 
-Baby boomers have been driving home ownership growth but<br>their influence will begin to wane in the coming decade, see @fig-pop-distribution.
+Baby boomers have been the driving home ownership growth but<br>their influence will begin to wane in the coming decade, see @fig-pop-distribution.
 
 ```{python}
 #| label: fig-pop-distribution
