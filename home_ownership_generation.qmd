@@ -6,10 +6,11 @@ format:
 jupyter: python3
 ---
 
-For a demonstration of a interactiive plotly line plot, see @fig-polar.
+Average home ownership has been dropping in each successive
+generation at every given age group, see @fig-generation.
 
 ```{python}
-#| label: fig-polar
+#| label: fig-generation
 #| fig-cap: "Home Ownership Rate (mean) by Generation<br>Source: Statistics NZ"
 
 import pandas as pd
@@ -80,8 +81,120 @@ df_ownership_grouped = (
 
 plot_ownership_by_age_and_generation_plotly(df_ownership_grouped)
 ```
+Average home ownership since 1986 has declined the most for those
+aged 25-34, see @fig-age.
 
-For a demonstration of a interactiive plotly line plot, see @fig-pop-distribution.
+```{python}
+#| label: fig-age
+#| fig-cap: "Home Ownership Rate (mean) by Generation<br>Source: Statistics NZ"
+
+import pandas as pd
+import plotly.graph_objects as go
+
+# Load the demographic share dataset
+df_ownership = pd.read_csv("home_ownership_generation.csv", sep=",")
+
+# Filter the data for the age ranges 25 to 74
+age_ranges = [
+    "25-29",
+    "30-34",
+    "35-39",
+    "40-44",
+    "45-49",
+    "50-54",
+    "55-59",
+    "60-64",
+    "65-69",
+    "70-74",
+]
+df_filtered = df_ownership[df_ownership["Age group"].isin(age_ranges)]
+
+
+# Define a function to map age ranges to the new intervals
+def map_age(age):
+    if age in ["25-29", "30-34"]:
+        return "25-34"
+    elif age in ["35-39", "40-44"]:
+        return "35-44"
+    elif age in ["45-49", "50-54"]:
+        return "45-54"
+    elif age in ["55-59", "60-64"]:
+        return "55-64"
+    elif age in ["65-69", "70-74"]:
+        return "65-74"
+    else:
+        return None
+
+
+# Apply the function to create a new age column
+df_filtered["Age_Group"] = df_filtered["Age group"].apply(map_age)
+
+# Group the data by the new age column and calculate the mean Home Ownership Rate for each group
+df_grouped = (
+    df_filtered.groupby(["Year", "Age_Group"])["Home Ownership Rate"]
+    .mean()
+    .reset_index()
+)
+
+# Create a line plot using Plotly
+fig = go.Figure()
+
+# Define colors for each age group
+colors = {
+    "25-34": "#636EFA",  #  blue
+    "35-44": "#B6E880",  # light green
+    "45-54": "#FFA15A",  # orange
+    "55-64": "#EF553B",  # red
+    "65-74": "#FF97FF",  # pink
+}
+
+# Add traces for each age group
+for age_group in df_grouped["Age_Group"].unique():
+    age_group_data = df_grouped[df_grouped["Age_Group"] == age_group]
+    fig.add_trace(
+        go.Scatter(
+            x=age_group_data["Year"],
+            y=age_group_data["Home Ownership Rate"],
+            mode="lines+markers",
+            name=age_group,
+            line=dict(color=colors[age_group]),
+            showlegend=False,
+        )
+    )
+    # Add annotation for the last data point of each age group
+    fig.add_annotation(
+        x=age_group_data["Year"].values[-1] + 1,
+        y=age_group_data["Home Ownership Rate"].values[-1],
+        text=age_group,
+        font=dict(color=colors[age_group], family="Consolas"),
+        showarrow=False,
+        xanchor="left",
+        yanchor="middle",
+    )
+
+# Update layout for dark mode
+fig.update_layout(
+    title="Home Ownership Rate (mean) by Age Group",
+    template="plotly_dark",
+    plot_bgcolor="#282a36",
+    paper_bgcolor="#282a36",
+    title_font=dict(size=18, family="Consolas"),
+    xaxis_title="Year",
+    yaxis_title="Home Ownership Rate",
+    font=dict(size=14, family="Consolas"),
+    width=500,  # Adjust based on your needs
+    height=450,  # Adjust based on your needs
+    margin=dict(l=20, r=50, t=40, b=20),
+)
+
+fig.update_yaxes(title_text="", range=[40, 90])
+fig.update_xaxes(title_text="", range=[1985, 2020])
+
+fig.show()
+```
+
+Baby boomers have been driving home ownership growth but their 
+influence will begin to wane in the coming decade, see @fig-pop-distribution.
 
 ```{python}
 #| label: fig-pop-distribution
