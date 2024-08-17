@@ -57,6 +57,7 @@ def plot_ownership_by_age_and_generation_plotly(df):
         title_font=dict(size=18, family="Consolas"),
         width=500,  # Adjust based on your needs
         height=450,  # Adjust based on your needs
+        margin=dict(l=20, r=20, t=40, b=20),
     )
 
     fig.update_yaxes(title_text="", range=[40, 90])
@@ -138,7 +139,7 @@ for (row, col), year in zip(row_col_pairs, years):
 # Add annotation pointing to the 'Baby Boomer' bar for 1996
 fig.add_annotation(
     x="65-69 Years",
-    y=250000,  # Adjust the y-coordinate to move the annotation down
+    y=270000,  # Adjust the y-coordinate to move the annotation down
     xref="x1",
     yref="y1",
     text="Baby Boomers",
@@ -151,8 +152,9 @@ fig.add_annotation(
 # Update layout for dark mode
 fig.update_layout(
     template="plotly_dark",
-    width=1000,
-    height=1000,
+    width=700,  
+    height=700,  
+    margin=dict(l=20, r=20, t=40, b=20),
     title_text="",
     plot_bgcolor="#282a36",
     paper_bgcolor="#282a36",
