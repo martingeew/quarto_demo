@@ -6,8 +6,7 @@ format:
 jupyter: python3
 ---
 
-Average home ownership has been dropping in each successive
-generation at every given age group, see @fig-generation.
+Average home ownership has been dropping in each successive generation<br>at every given age group, see @fig-generation.
 
 ```{python}
 #| label: fig-generation
@@ -81,18 +80,17 @@ df_ownership_grouped = (
 
 plot_ownership_by_age_and_generation_plotly(df_ownership_grouped)
 ```
-Average home ownership since 1986 has declined the most for those
-aged 25-34, see @fig-age.
+Average home ownership since 1986 has declined the most for those<br>aged 25-34, see @fig-age.
 
 ```{python}
 #| label: fig-age
-#| fig-cap: "Home Ownership Rate (mean) by Generation<br>Source: Statistics NZ"
+#| fig-cap: "Home Ownership Rate (mean) by age group<br>Source: Statistics NZ"
 
 import pandas as pd
 import plotly.graph_objects as go
 
 # Load the demographic share dataset
-df_ownership = pd.read_csv("home_ownership_generation.csv", sep=",")
+df_filtered = pd.read_csv("home_ownership_generation.csv", sep=",")
 
 # Filter the data for the age ranges 25 to 74
 age_ranges = [
@@ -107,7 +105,7 @@ age_ranges = [
     "65-69",
     "70-74",
 ]
-df_filtered = df_ownership[df_ownership["Age group"].isin(age_ranges)]
+df_filtered = df_filtered[df_filtered["Age group"].isin(age_ranges)]
 
 
 # Define a function to map age ranges to the new intervals
@@ -127,7 +125,7 @@ def map_age(age):
 
 
 # Apply the function to create a new age column
-df_filtered["Age_Group"] = df_filtered["Age group"].apply(map_age)
+df_filtered.loc[:, "Age_Group"] = df_filtered["Age group"].apply(map_age)
 
 # Group the data by the new age column and calculate the mean Home Ownership Rate for each group
 df_grouped = (
@@ -193,8 +191,7 @@ fig.update_xaxes(title_text="", range=[1985, 2020])
 fig.show()
 ```
 
-Baby boomers have been driving home ownership growth but their 
-influence will begin to wane in the coming decade, see @fig-pop-distribution.
+Baby boomers have been driving home ownership growth but<br>their influence will begin to wane in the coming decade, see @fig-pop-distribution.
 
 ```{python}
 #| label: fig-pop-distribution
