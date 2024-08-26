@@ -5,7 +5,7 @@ format:
     code-fold: true
 jupyter: python3
 ---
-Author: Martin Wong @ [Autonoomous Econ](https://autonomousecon.substack.com/)<br>
+Author: Martin Wong @ [Autonomous Econ](https://autonomousecon.substack.com/)<br>
 This is a demo site built using Quarto and Python. **Check out<br>the 
 full Substack post [here](https://open.substack.com/pub/autonomousecon/p/how-the-pros-showcase-their-data?r=2o1mc&utm_campaign=post&utm_medium=web).**
 
